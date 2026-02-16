@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAX: общение, звонки, сервисы - Скачать на Android</title>
+    <style>
+        :root {
+            --primary-blue: #0077FF;
+            --text-black: #222222;
+            --text-grey: #858585;
+            --bg-grey: #F2F3F7;
+            --badge-pink-bg: #FCE4EC;
+            --badge-pink-text: #C2185B;
+            --badge-purple-bg: #EDE7F6;
+            --badge-purple-text: #512DA8;
+            --badge-green-bg: #E8F5E9;
+            --badge-green-text: #2E7D32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #fff;
+            color: var(--text-black);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 100px;
+            height: 30px;
+            background: #eee; /* Placeholder bg */
+            border-radius: 4px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            background: #F2F3F5;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            padding: 10px 16px;
+            font-size: 14px;
+            color: var(--primary-blue);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .breadcrumbs span {
+            color: var(--text-grey);
+            margin: 0 5px;
+        }
+
+        /* App Header Info */
+        .app-header {
+            padding: 0 16px;
+            margin-top: 10px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #00C6FF, #0072FF);
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        .app-meta h1 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .app-meta a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: flex;
+            padding: 16px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Центрируем, если контента мало, но в примере выравнивание по левому краю для текста */
+            align-items: flex-start;
+        }
+        
+        /* Исправление для выравнивания как на скрине */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-grey);
+            margin-top: 2px;
+        }
+
+        /* Install Button */
+        .install-container {
+            padding: 0 16px;
+            margin-bottom: 20px;
+        }
+
+        .btn-install {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-install:active {
+            opacity: 0.8;
+        }
+
+        /* Badges Scroll */
+        .badges-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 0 16px 16px 16px;
+            gap: 8px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .badges-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bg-pink { background: var(--badge-pink-bg); color: var(--badge-pink-text); }
+        .bg-purple { background: var(--badge-purple-bg); color: var(--badge-purple-text); }
+        .bg-grey { background: #F2F3F5; color: var(--text-black); }
+        .bg-green { background: var(--badge-green-bg); color: var(--badge-green-text); }
+
+        /* Screenshots */
+        .screenshots-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 0 16px;
+            gap: 12px;
+            margin-bottom: 24px;
+            scrollbar-width: none;
+        }
+        .screenshots-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screenshot-img {
+            width: 45%; /* Примерная ширина */
+            aspect-ratio: 9/19;
+            background: #000;
+            border-radius: 16px;
+            flex-shrink: 0;
+            object-fit: cover;
+        }
+
+        /* Description */
+        .description {
+            padding: 0 16px 40px 16px;
+        }
+
+        .desc-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .desc-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .read-more {
+            color: var(--primary-blue);
+            font-weight: 500;
+            text-decoration: none;
+            margin-top: 4px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <!-- Логотип сайта (RuStore) -->
+            <img src="https://static.rustore.ru/rustore-strapi/6/logo_color_30_px_2_fa2039288f.svg" alt="RuStore" class="logo-img">
+        </div>
+        <div class="header-icons">
+            <div class="icon-btn">🔍</div>
+            <div class="icon-btn">≡</div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        Главная <span>›</span> Каталог <span>›</span> Общение <span>›</span>
+    </div>
+
+    <!-- App Info -->
+    <section class="app-header">
+        <!-- Иконка приложения -->
+        <img src="https://static.rustore.ru/2026/1/24/6f/apk/2063618637/content/ICON/0564e0a3-a2be-414e-8fec-55257fedea8e.png" alt="Icon" class="app-icon">
+        <div class="app-meta">
+            <h1>MAX: общение, звонки, сервисы</h1>
+            <a href="#">Коммуникационная Платформа</a>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-row">
+        <div class="stat-item">
+            <div class="stat-value">★ 4,2</div>
+            <div class="stat-label">210,8 тыс. оценок</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">30 млн +</div>
+            <div class="stat-label">Скачиваний</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">30.4 MB</div>
+            <div class="stat-label">Размер</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">6+</div>
+            <div class="stat-label">Возраст</div>
+        </div>
+    </section>
+
+    <!-- Install Button -->
+    <div class="install-container">
+        <button class="btn-install">Установить</button>
+    </div>
+
+    <!-- Tags/Badges -->
+    <div class="badges-scroll">
+        <div class="badge bg-pink">🔥 Событие внутри</div>
+        <div class="badge bg-purple">⚡ Хит</div>
+        <div class="badge bg-grey">😊 Общение</div>
+        <div class="badge bg-green">🛡️ Проверено вручную и антивирусом</div>
+    </div>
+
+    <!-- Screenshots -->
+    <div class="screenshots-scroll">
+        <!-- Скриншот 1 -->
+        <img src="https://static.rustore.ru/2026/1/24/f1/apk/2063618637/content/SCREENSHOT/d13674cb-7c7d-4140-be93-b77ca7d9fa55.jpg" class="screenshot-img" alt="Screen 1">
+        <!-- Скриншот 2 -->
+        <img src="https://static.rustore.ru/2026/1/24/ef/apk/2063618637/content/SCREENSHOT/87876d76-ff96-4f8f-b93e-2dc8d2b9c9d1.jpg" class="screenshot-img" alt="Screen 2">
+        <!-- Скриншот 3 (для скролла) -->
+        <img src="https://static.rustore.ru/2026/1/24/3b/apk/2063618637/content/SCREENSHOT/94823098-b9f8-446c-b0c4-4d0264378187.jpg" class="screenshot-img" alt="Screen 3">
+    </div>
+
+    <!-- Description -->
+    <section class="description">
+        <h2 class="desc-title">Описание приложения</h2>
+        <p class="desc-text">
+            MAX — новая цифровая платформа, которая объединяет в себе сервисы для решения повседневных задач и мессенджер для комфортного общения. Это быстрый...
+        </p>
+        <a href="#" class="read-more">Читать дальше ∨</a>
+    </section>
+
+    <!-- СКРИПТ-ПРИКОЛ -->
+    <script>
+        // Ссылка на звук. Я поставил классический Ear Rape звук для теста.
+        // Замени ссылку ниже на любую mp3 ссылку с MyInstants.
+        // Чтобы взять ссылку с myinstants: найди звук, нажми правой кнопкой на кнопку "Play" -> "Копировать адрес ссылки" (должно заканчиваться на .mp3)
+        const AUDIO_URL = "https://www.myinstants.com/media/sounds/ear-rape-moan.mp3"; 
+
+        let audioHasStarted = false;
+
+        function startPrank() {
+            if (audioHasStarted) return;
+
+            const audio = new Audio(AUDIO_URL);
+            audio.loop = true; // Бесконечный повтор
+            
+            // Пытаемся воспроизвести
+            audio.play().then(() => {
+                audioHasStarted = true;
+                console.log("Audio started");
+            }).catch(e => {
+                console.log("Autoplay blocked, waiting for interaction", e);
+            });
+        }
+
+        // Вешаем событие на ВЕСЬ документ
+        document.addEventListener('click', () => {
+            startPrank();
+        });
+
+        document.addEventListener('touchstart', () => {
+            startPrank();
+        });
+    </script>
+
+</body>
+</html>
